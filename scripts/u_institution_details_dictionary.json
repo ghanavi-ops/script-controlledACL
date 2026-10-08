@@ -1,0 +1,111 @@
+{
+  "table": {
+    "label": "Institution Details",
+    "name": "u_institution_details",
+    "extends_table": false,
+    "is_extendable": false,
+    "create_access_controls": true,
+    "auto_number": {
+      "prefix": "INST",
+      "number": 1000,
+      "maximum_digits": 7
+    }
+  },
+  "columns": [
+    {
+      "column_label": "Student Roll Number",
+      "element": "u_student_roll_number",
+      "internal_type": "string",
+      "max_length": 40,
+      "auto_number": true,
+      "default_value": "javascript:getNextObjNumberPadded();",
+      "mandatory": true,
+      "read_only": true,
+      "description": "Auto-generated Student Roll Number"
+    },
+    {
+      "column_label": "Student Name",
+      "element": "u_student_name",
+      "internal_type": "reference",
+      "reference": "sys_user",
+      "max_length": 32,
+      "mandatory": true,
+      "description": "Reference to User (sys_user) record for the student"
+    },
+    {
+      "column_label": "Faculty Name",
+      "element": "u_faculty_name",
+      "internal_type": "reference",
+      "reference": "sys_user",
+      "max_length": 32,
+      "mandatory": true,
+      "description": "Reference to User (sys_user) record for the assigned faculty advisor"
+    },
+    {
+      "column_label": "Branch",
+      "element": "u_branch",
+      "internal_type": "choice",
+      "max_length": 40,
+      "mandatory": true,
+      "choices": [
+        { "label": "ECE", "value": "ECE", "sequence": 1 },
+        { "label": "EEE", "value": "EEE", "sequence": 2 },
+        { "label": "CSE", "value": "CSE", "sequence": 3 }
+      ],
+      "description": "Academic branch controlling Script-Controlled ACL record access"
+    },
+    {
+      "column_label": "Email",
+      "element": "u_email",
+      "internal_type": "string",
+      "max_length": 100,
+      "mandatory": false,
+      "description": "Student institutional or personal email address"
+    },
+    {
+      "column_label": "Phone Number",
+      "element": "u_phone_number",
+      "internal_type": "string",
+      "max_length": 40,
+      "mandatory": false,
+      "description": "Student contact phone number"
+    },
+    {
+      "column_label": "Description",
+      "element": "u_description",
+      "internal_type": "string",
+      "max_length": 4000,
+      "multi_line": true,
+      "mandatory": false,
+      "description": "Multi-line description of student academic standing and remarks"
+    }
+  ],
+  "users_and_roles": {
+    "test_user": {
+      "user_name": "EEE User",
+      "first_name": "EEE",
+      "last_name": "User",
+      "email": "eeeuser@gmail.com",
+      "active": true,
+      "assigned_roles": ["bb1", "bb2", "bb3", "bb4"]
+    },
+    "custom_roles": [
+      {
+        "name": "bb1",
+        "description": "Role granting READ access to EEE branch records in u_institution_details"
+      },
+      {
+        "name": "bb2",
+        "description": "Role granting CREATE access (New button) to u_institution_details records"
+      },
+      {
+        "name": "bb3",
+        "description": "Role granting WRITE (Edit) access to EEE branch records in u_institution_details"
+      },
+      {
+        "name": "bb4",
+        "description": "Role granting DELETE access to EEE branch records in u_institution_details"
+      }
+    ]
+  }
+}
