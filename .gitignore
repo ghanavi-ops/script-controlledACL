@@ -1,0 +1,25 @@
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node / Build artifacts
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment and secrets (Never commit secrets or credentials)
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+secrets.json

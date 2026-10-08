@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServiceNow — Script-Controlled ACL (u_institution_details)</title>
+  <link rel="stylesheet" href="src/styles.css" />
+</head>
+<body>
+  <!-- Top ServiceNow Next Experience Header -->
+  <header class="sn-topbar">
+    <div class="sn-brand">
+      <div class="sn-logo">NOW</div>
+      <div class="sn-title-group">
+        <h1>Script-Controlled ACL – Restrict Record Access Based on Field Value</h1>
+        <p>ServiceNow System Administrator • Table: <code>u_institution_details</code> (Institution Details)</p>
+      </div>
+    </div>
+
+    <div class="sn-controls">
+      <button type="button" class="sn-pill elevated" id="elevateSecurityAdminBtn">
+        🔒 security_admin: Elevated
+      </button>
+
+      <div class="sn-impersonate-box">
+        <label for="impersonateSelect">👤 Impersonate User:</label>
+        <select id="impersonateSelect" class="sn-select">
+          <option value="eee_user">EEE User (eeeuser@gmail.com)</option>
+          <option value="admin">System Administrator (admin)</option>
+          <option value="unauthorized_user">Unauthorized User (No Roles)</option>
+        </select>
+      </div>
+
+      <span class="sn-pill" id="activeUserBadge">EEE User (eeeuser@gmail.com)</span>
+    </div>
+  </header>
+
+  <!-- Interactive Role Assignment Bar for EEE User (bb1, bb2, bb3, bb4) -->
+  <section class="sn-role-bar">
+    <div class="role-chips">
+      <span class="role-chip-label">🔑 Active Roles on <code>EEE User</code>:</span>
+      <div id="eeeRoleToggles" class="role-chips"></div>
+    </div>
+    <div id="statusToast" class="toast-banner show">Ready</div>
+  </section>
+
+  <!-- Main ServiceNow Workspace -->
+  <div class="sn-layout">
+    <!-- Application Navigator Sidebar -->
+    <aside class="sn-sidebar">
+      <div class="nav-filter-box">
+        <input type="text" value="u_institution_details.list" readonly aria-label="Application Navigator Filter" />
+      </div>
+
+      <div>
+        <div class="nav-section-title">Application Navigator</div>
+        <ul class="nav-list">
+          <li>
+            <button type="button" class="nav-btn active" data-tab="list" id="navTabList">
+              <span>📋 Institution Details List</span>
+              <span class="nav-badge">LIVE</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-btn" data-tab="users" id="navTabUsers">
+              <span>👤 Users &amp; Roles</span>
+              <span class="nav-badge">M1</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-btn" data-tab="table" id="navTabTable">
+              <span>🗂 Table Definition</span>
+              <span class="nav-badge">M2</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-btn" data-tab="acls" id="navTabAcls">
+              <span>🛡️ Access Control (ACL)</span>
+              <span class="nav-badge">M3–M6</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-btn" data-tab="verify" id="navTabVerify">
+              <span>✅ Verification Suite</span>
+              <span class="nav-badge">M7</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="team-sidebar-card">
+        <h4>MySkillWallet Project Team</h4>
+        <ul>
+          <li><strong>1. Ghanavi .N</strong> — Team Leader</li>
+          <li><strong>2. Yakshini .M</strong> — Member</li>
+          <li><strong>3. Selvadevi.R</strong> — Member</li>
+          <li><strong>4. Aswin .S</strong> — Member</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content Pane -->
+    <main class="sn-main">
+      <!-- Real-Time 4-Operation ACL Status Strip -->
+      <div class="acl-status-strip" id="aclStatusStrip"></div>
+
+      <!-- Dynamic View Container -->
+      <div id="mainViewContainer" style="display:flex;flex-direction:column;gap:1rem;"></div>
+    </main>
+  </div>
+
+  <!-- Create / Edit Record Modal -->
+  <div class="sn-modal-backdrop" id="recordModalBackdrop">
+    <div class="sn-modal">
+      <div class="sn-card-header">
+        <h2 id="recordModalTitle">Institution Details Record</h2>
+      </div>
+      <div class="sn-card-body">
+        <form id="recordModalForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="formRollNumber">Student Roll Number (Auto Number)</label>
+              <input type="text" id="formRollNumber" readonly style="background:#f1f5f9;font-weight:700;" />
+            </div>
+            <div class="form-group">
+              <label for="formBranch">Branch (Choice: ECE, EEE, CSE)</label>
+              <select id="formBranch">
+                <option value="EEE">EEE</option>
+                <option value="ECE">ECE</option>
+                <option value="CSE">CSE</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="formStudentName">Student Name (Reference: User)</label>
+              <input type="text" id="formStudentName" required />
+            </div>
+            <div class="form-group">
+              <label for="formFacultyName">Faculty Name (Reference: User)</label>
+              <input type="text" id="formFacultyName" required />
+            </div>
+            <div class="form-group">
+              <label for="formEmail">Email</label>
+              <input type="email" id="formEmail" required />
+            </div>
+            <div class="form-group">
+              <label for="formPhone">Phone Number</label>
+              <input type="text" id="formPhone" required />
+            </div>
+            <div class="form-group full">
+              <label for="formDescription">Description (Multi String)</label>
+              <textarea id="formDescription" rows="3"></textarea>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:0.6rem;margin-top:1.15rem;">
+            <button type="button" class="btn btn-outline" id="cancelModalBtn">Cancel</button>
+            <button type="submit" class="btn btn-success" id="saveModalBtn">💾 Submit / Save Record</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="src/aclEngine.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
