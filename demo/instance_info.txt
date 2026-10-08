@@ -1,0 +1,12 @@
+Project Title       : Script-Controlled ACL – Restrict Record Access Based on Field Value
+MySkillWallet Module: ServiceNow System Administrator - NM Eng
+Module ID           : 6a69e3438beabdd402737035
+Project ID          : 6a96be195827789d6375618f
+Subscribed ID       : 6ab4b6d4a238dc999eb4fee7
+Target Custom Table : u_institution_details (Institution Details)
+Test User Account   : EEE User (eeeuser@gmail.com)
+Custom Roles        : bb1 (Read), bb2 (Create), bb3 (Write), bb4 (Delete)
+Elevated Role       : security_admin
+GitHub Repository   : https://github.com/ghanavi-ops/script-controlledACL
+Demo Video URL      : https://github.com/ghanavi-ops/script-controlledACL/blob/main/demo/script-controlled-acl-demo.webm
+Completion Status   : 100% (All 7 Epics / 8 Stories Completed)
