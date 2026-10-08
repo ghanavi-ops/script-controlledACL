@@ -1,0 +1,164 @@
+{
+  "project_metadata": {
+    "myskillwallet_module": "ServiceNow System Administrator - NM Eng",
+    "myskillwallet_module_id": "6a69e3438beabdd402737035",
+    "myskillwallet_project_title": "Script-Controlled ACL – Restrict Record Access Based on Field Value",
+    "myskillwallet_project_id": "6a96be195827789d6375618f",
+    "myskillwallet_subscribed_id": "6ab4b6d4a238dc999eb4fee7",
+    "github_repository": "https://github.com/ghanavi-ops/script-controlledACL",
+    "demo_url": "https://github.com/ghanavi-ops/script-controlledACL/blob/main/demo/script-controlled-acl-demo.webm",
+    "verified_at": "2026-10-08T11:20:00+05:30",
+    "myskillwallet_completion_percentage": 100,
+    "epics_total": 7,
+    "stories_total": 8,
+    "stories_completed": 8
+  },
+  "team_members": [
+    {
+      "name": "Ghanavi .N",
+      "role": "Team Leader",
+      "email": "ghanavighanu7@gmail.com",
+      "assigned_stories": ["Users Creation", "Roles Creation", "Creation of ACL-Create"]
+    },
+    {
+      "name": "Yakshini .M",
+      "role": "Member",
+      "email": "yakshiniskitchen@gmail.com",
+      "assigned_stories": ["Creation of Table", "Creation of ACL-DELETE", "Project Outcome"]
+    },
+    {
+      "name": "Selvadevi.R",
+      "role": "Member",
+      "email": "selvadevi701@gmail.com",
+      "assigned_stories": ["ACL Configuration"]
+    },
+    {
+      "name": "Aswin .S",
+      "role": "Member",
+      "email": "aswinceo2004@gmail.com",
+      "assigned_stories": ["Creation of ACL-Write"]
+    }
+  ],
+  "myskillwallet_epics_and_stories": [
+    {
+      "epic_id": "6a96be195827789d63756191",
+      "epic_title": "Milestone-1 Creation of Users and Roles",
+      "progress": 100,
+      "stories": [
+        { "story_id": "6a96be195827789d63756192", "title": "Users Creation", "status": "completed" },
+        { "story_id": "6a96be195827789d63756193", "title": "Roles Creation", "status": "completed" }
+      ]
+    },
+    {
+      "epic_id": "6a96be195827789d63756194",
+      "epic_title": "Milestone-2: Tables Creation",
+      "progress": 100,
+      "stories": [
+        { "story_id": "6a96be1a5827789d63756195", "title": "Creation of Table", "status": "completed" }
+      ]
+    },
+    {
+      "epic_id": "6a96be1a5827789d63756196",
+      "epic_title": "Milestone-3: Creation of Access Control List-READ",
+      "progress": 100,
+      "stories": [
+        { "story_id": "6a96be1a5827789d63756197", "title": "ACL Configuration", "status": "completed" }
+      ]
+    },
+    {
+      "epic_id": "6a96be1a5827789d63756198",
+      "epic_title": "Milestone-4: Creation of Access Control List-CREATE",
+      "progress": 100,
+      "stories": [
+        { "story_id": "6a96be1a5827789d63756199", "title": "Creation of ACL-Create", "status": "completed" }
+      ]
+    },
+    {
+      "epic_id": "6a96be1a5827789d6375619a",
+      "epic_title": "Milestone-5: Creation of Access Control List-WRITE",
+      "progress": 100,
+      "stories": [
+        { "story_id": "6a96be1a5827789d6375619b", "title": "Creation of ACL-Write", "status": "completed" }
+      ]
+    },
+    {
+      "epic_id": "6a96be1a5827789d6375619c",
+      "epic_title": "Milestone-6: Creation of Access Control List-DELETE",
+      "progress": 100,
+      "stories": [
+        { "story_id": "6a96be1a5827789d6375619d", "title": "Creation of ACL-DELETE", "status": "completed" }
+      ]
+    },
+    {
+      "epic_id": "6a96be1a5827789d6375619e",
+      "epic_title": "Milestone-7: Conclusion",
+      "progress": 100,
+      "stories": [
+        { "story_id": "6a96be1a5827789d6375619f", "title": "Project Outcome", "status": "completed" }
+      ]
+    }
+  ],
+  "servicenow_configurations": {
+    "sys_user": {
+      "user_name": "EEE User",
+      "first_name": "EEE",
+      "last_name": "User",
+      "email": "eeeuser@gmail.com",
+      "active": true,
+      "roles": ["bb1", "bb2", "bb3", "bb4"]
+    },
+    "sys_db_object": {
+      "label": "Institution Details",
+      "name": "u_institution_details",
+      "extends_table": false,
+      "columns": [
+        "u_student_roll_number",
+        "u_student_name",
+        "u_faculty_name",
+        "u_branch",
+        "u_email",
+        "u_phone_number",
+        "u_description"
+      ]
+    },
+    "sys_security_acl": [
+      {
+        "type": "record",
+        "operation": "read",
+        "name": "u_institution_details",
+        "active": true,
+        "advanced": true,
+        "requires_role": "bb1",
+        "condition": "u_branch=EEE^EQ",
+        "script": "(function () {\n    // Allow admin users full access\n    if (gs.hasRole('admin')) {\n        return true;\n    }\n    // Allow only EEE branch users to see EEE records\n    if (gs.hasRole('bb1')){\n        return true;\n    }\n    // Deny access for all others\n    return false;\n})();"
+      },
+      {
+        "type": "record",
+        "operation": "create",
+        "name": "u_institution_details",
+        "active": true,
+        "advanced": false,
+        "requires_role": "bb2",
+        "condition": ""
+      },
+      {
+        "type": "record",
+        "operation": "write",
+        "name": "u_institution_details",
+        "active": true,
+        "advanced": false,
+        "requires_role": "bb3",
+        "condition": ""
+      },
+      {
+        "type": "record",
+        "operation": "delete",
+        "name": "u_institution_details",
+        "active": true,
+        "advanced": false,
+        "requires_role": "bb4",
+        "condition": ""
+      }
+    ]
+  }
+}
