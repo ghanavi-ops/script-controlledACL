@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2026-10-08 04:45:00">
+  <sys_remote_update_set action="INSERT_OR_UPDATE">
+    <application display_value="Global">global</application>
+    <application_name>Global</application_name>
+    <application_scope>global</application_scope>
+    <application_version/>
+    <collisions/>
+    <commit_date/>
+    <deleted/>
+    <description>Script-Controlled ACL – Restrict Record Access Based on Field Value (u_institution_details: READ, CREATE, WRITE, DELETE ACLs with roles bb1, bb2, bb3, bb4 and Branch=EEE condition)</description>
+    <inserted/>
+    <name>Script-Controlled ACL - Institution Details</name>
+    <origin_sys_id/>
+    <parent display_value=""/>
+    <release_date/>
+    <remote_base_update_set display_value=""/>
+    <remote_parent_id/>
+    <remote_sys_id>6a96be195827789d6375618f00000001</remote_sys_id>
+    <state>loaded</state>
+    <summary/>
+    <sys_class_name>sys_remote_update_set</sys_class_name>
+    <sys_created_by>admin</sys_created_by>
+    <sys_created_on>2026-10-08 04:45:00</sys_created_on>
+    <sys_id>6a96be195827789d6375618f00000002</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>admin</sys_updated_by>
+    <sys_updated_on>2026-10-08 04:45:00</sys_updated_on>
+    <update_set display_value=""/>
+    <update_source display_value=""/>
+    <updated/>
+  </sys_remote_update_set>
+
+  <!-- Milestone-3: READ Script-Controlled ACL on u_institution_details -->
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <active>true</active>
+    <admin_overrides>true</admin_overrides>
+    <advanced>true</advanced>
+    <condition table="u_institution_details">u_branch=EEE^EQ</condition>
+    <description>Restrict READ access on u_institution_details to EEE branch records for users with bb1 role; allow full access for admin.</description>
+    <name>u_institution_details</name>
+    <operation display_value="read">read</operation>
+    <script><![CDATA[(function () {
+    // Allow admin users full access
+    if (gs.hasRole('admin')) {
+        return true;
+    }
+    // Allow only EEE branch users to see EEE records
+    if (gs.hasRole('bb1')){
+        return true;
+    }
+    // Deny access for all others
+    return false;
+})();]]></script>
+    <sys_name>u_institution_details</sys_name>
+    <type display_value="record">record</type>
+  </sys_security_acl>
+
+  <!-- Milestone-4: CREATE ACL on u_institution_details (Role: bb2) -->
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <active>true</active>
+    <admin_overrides>true</admin_overrides>
+    <advanced>false</advanced>
+    <condition/>
+    <description>Grant CREATE access (New button) on u_institution_details to users with role bb2.</description>
+    <name>u_institution_details</name>
+    <operation display_value="create">create</operation>
+    <requires_role>bb2</requires_role>
+    <sys_name>u_institution_details</sys_name>
+    <type display_value="record">record</type>
+  </sys_security_acl>
+
+  <!-- Milestone-5: WRITE ACL on u_institution_details (Role: bb3) -->
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <active>true</active>
+    <admin_overrides>true</admin_overrides>
+    <advanced>false</advanced>
+    <condition/>
+    <description>Grant WRITE (Edit) access on u_institution_details to users with role bb3.</description>
+    <name>u_institution_details</name>
+    <operation display_value="write">write</operation>
+    <requires_role>bb3</requires_role>
+    <sys_name>u_institution_details</sys_name>
+    <type display_value="record">record</type>
+  </sys_security_acl>
+
+  <!-- Milestone-6: DELETE ACL on u_institution_details (Role: bb4) -->
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <active>true</active>
+    <admin_overrides>true</admin_overrides>
+    <advanced>false</advanced>
+    <condition/>
+    <description>Grant DELETE access on u_institution_details to users with role bb4.</description>
+    <name>u_institution_details</name>
+    <operation display_value="delete">delete</operation>
+    <requires_role>bb4</requires_role>
+    <sys_name>u_institution_details</sys_name>
+    <type display_value="record">record</type>
+  </sys_security_acl>
+</unload>
